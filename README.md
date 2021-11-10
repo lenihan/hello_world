@@ -42,7 +42,7 @@ sudo apt-get install powershell
 ### Run setup script
 
 ```powershell
-$HOME/src/hello_world/scripts/setup.ps1
+~/src/hello_world/scripts/setup.ps1
 ```
 
 #### WSL
