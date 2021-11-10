@@ -92,9 +92,9 @@ function build_third_party_dependencies {
         $triplet = "x64-linux"
         ./bootstrap-vcpkg.sh -disableMetrics
     }
-    ./vcpkg --triplet=$triplet install imgui   # ~11 sec
-    ./vcpkg --triplet=$triplet install magnum  # ~3min
-    ./vcpkg --triplet=$triplet install osg     # ~26 min
+    ./vcpkg --triplet=$triplet install imgui   # ~22 sec
+    ./vcpkg --triplet=$triplet install magnum  # ~3 min
+    ./vcpkg --triplet=$triplet install osg     # ~30 min
     ./vcpkg --triplet=$triplet install qt5     # ~60 min
 }
 
