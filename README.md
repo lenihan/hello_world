@@ -47,8 +47,8 @@ sudo apt-get install powershell
 
 #### WSL
 
-To allow Windows and WSL to use same source and third party directory structure, run setup.ps1 from Windows setup:
+To allow Windows and WSL to use same source and third party directory structure, run setup.ps1 in WSL from Windows location:
 
 ```powershell
-iex /mnt/c/Users/$env:LOGNAME/src/hello_world/scripts/setup.ps1
+iex "/mnt/c/Users/$env:LOGNAME/src/hello_world/scripts/setup.ps1"
 ```
