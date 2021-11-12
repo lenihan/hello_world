@@ -6,4 +6,7 @@ cmake_minimum_required (VERSION 3.8)
 project ("hello_world")
 
 # Include sub-projects.
-add_subdirectory ("hello_cmake")
+add_subdirectory ("src/hello_cmake")
+add_subdirectory ("src/hello_qt")
+
+
