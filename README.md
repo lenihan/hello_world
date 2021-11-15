@@ -52,3 +52,24 @@ To allow Windows and WSL to use same source and third party directory structure,
 ```powershell
 iex "/mnt/c/Users/$env:LOGNAME/src/hello_world/scripts/setup.ps1"
 ```
+
+## Build
+
+### Windows
+
+### WSL
+
+```powershell
+# generate build files
+/home/david/.vs/cmake/bin/cmake -G "Ninja"   -DCMAKE_BUILD_TYPE:STRING="Debug" -DCMAKE_INSTALL_PREFIX:PATH="/mnt/c/Users/david/src/hello_world/out/install/WSL-GCC-Debug"  /mnt/c/Users/david/src/hello_world/CMakeLists.txt
+
+# build hello_qt
+cd /mnt/c/Users/david/src/hello_world/out/build/WSL-GCC-Debug
+/home/david/.vs/cmake/bin/cmake --build /mnt/c/Users/david/src/hello_world/out/build/WSL-GCC-Debug --target hello_qt --config Debug
+```
+
+### Ubuntu
+
+## Run
+
+## Debug
