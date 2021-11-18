@@ -10,8 +10,10 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/third_party/vcpkg/scripts/b
 
 project ("hello_world")
 
+include_directories("${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include")
+
 # Include sub-projects.
 add_subdirectory ("src/hello_cmake")
 add_subdirectory ("src/hello_qt")
-
+add_subdirectory ("src/hello_osg")
 
