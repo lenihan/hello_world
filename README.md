@@ -8,6 +8,20 @@ Simple crossplatform (Windows/Linux) demo apps
 * Magnum
 * Bazel
 
+## Screen Shots
+
+* Visual Studio 2022 running Windows app
+![image](https://user-images.githubusercontent.com/22015149/144476924-674fc479-e9ab-4c7f-a503-b4bb9b258da8.png)
+
+* Visual Studio 2022 running Linux app
+![image](https://user-images.githubusercontent.com/22015149/144477651-11777077-9afe-46ba-8951-1dffd476bae0.png)
+
+* Visual Studio 2022 debugging Linux app
+![image](https://user-images.githubusercontent.com/22015149/144477889-0fb48726-7186-4002-884e-70477c162fe9.png)
+
+* Visual Studio 2022 debugging Linux app, tracing into Qt
+![image](https://user-images.githubusercontent.com/22015149/144478023-b82a7659-3b2a-42c4-8432-b313e9487bb6.png)
+
 ## Setup
 
 The setup script uses PowerShell 7+.
