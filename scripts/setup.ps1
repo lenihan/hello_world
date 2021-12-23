@@ -11,6 +11,10 @@ function install_prerequisites {
         winget install --silent Microsoft.VisualStudio.2022.Community
         winget install --silent Git.Git
         winget install --silent Microsoft.VisualStudioCode
+        winget install --silent Kitware.CMake
+        
+        # Make 
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
     }
     elseif ($IsLinux) {
 
@@ -67,17 +71,21 @@ function install_prerequisites {
         sudo apt-get -y install libxcb-xkb-dev
         sudo apt-get -y install libxcb-xinput-dev
     }
+
+    # Make 
+    Write-Host "NOTE: May need to start new terminal to get updated PATH" -ForegroundColor Yellow
 }
 
 function build_third_party_dependencies {
     Write-Host "Build third party libraries" -ForegroundColor Cyan
     
-    Set-Location $PSScriptRoot/..
-    mkdir third_party
-    Set-Location third_party
+    $ROOT_DIR = "$PSScriptRoot/.."
+    Push-Location $ROOT_DIR
+    mkdir $ROOT_DIR\third_party -Force | Out-Null
+    Set-Location $ROOT_DIR/third_party
     
     git clone https://github.com/Microsoft/vcpkg.git
-    Set-Location vcpkg
+    Set-Location $ROOT_DIR\third_party\vcpkg
     git checkout 
     
     if ($IsWindows) {
@@ -86,7 +94,7 @@ function build_third_party_dependencies {
         
         # To avoid path length issues building qt5 (qtdeclarative), make root as short as possible
         # From https://github.com/microsoft/vcpkg/issues/20604#issuecomment-939091795
-        subst k: $pwd
+        subst k: $ROOT_DIR\third_party\vcpkg
         Set-Location k:
     } elseif ($IsLinux) {
         $triplet = "x64-linux"
@@ -96,6 +104,7 @@ function build_third_party_dependencies {
     ./vcpkg --triplet=$triplet install magnum  # Windows:  ~3 m, WSL:   ~22 m, Ubuntu:  ~2 m
     ./vcpkg --triplet=$triplet install osg     # Windows: ~30 m, WSL:  ~1.1 h, Ubuntu: ~15 m
     ./vcpkg --triplet=$triplet install qt5     # Windows: ~60 m, WSL: ~10.2 h, Ubuntu: ~54 m
+    Pop-Location
 }
 
 install_prerequisites
