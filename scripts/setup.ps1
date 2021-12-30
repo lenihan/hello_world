@@ -8,13 +8,19 @@ function install_prerequisites {
         #             https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1?activetab=pivot:overviewtab
 
         # NOTE: Run as Admin to avoid prompts
-        winget install --silent Microsoft.VisualStudio.2022.Community
-        winget install --silent Git.Git
-        winget install --silent Microsoft.VisualStudioCode
-        winget install --silent Kitware.CMake
-        
-        # Make 
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+        $ids = 
+            "Microsoft.VisualStudio.2022.Community", 
+            "Git.Git", 
+            "Microsoft.VisualStudioCode", 
+            "Kitware.Cmake"
+        $installed = winget list
+        foreach ($id in $ids) {
+            write-host "$id not found, installing" -forgroundcolor red
+            $installed = ($installed -match $id).count -eq 1
+            if (!$installed) {
+                winget install --silent $id
+            }
+        }
     }
     elseif ($IsLinux) {
 
@@ -89,7 +95,7 @@ function build_third_party_dependencies {
     git checkout 
     
     if ($IsWindows) {
-        $triplet = "x64-windows"
+        $triplet = "x64-windows"   # dynamic library, dynamic CRT
         ./bootstrap-vcpkg.bat -disableMetrics
         
         # To avoid path length issues building qt5 (qtdeclarative), make root as short as possible
@@ -100,10 +106,11 @@ function build_third_party_dependencies {
         $triplet = "x64-linux"
         ./bootstrap-vcpkg.sh -disableMetrics
     }
-    ./vcpkg --triplet=$triplet install imgui   # Windows: ~22 s, WSL:    ~2 m, Ubuntu:  ~9 s
-    ./vcpkg --triplet=$triplet install magnum  # Windows:  ~3 m, WSL:   ~22 m, Ubuntu:  ~2 m
-    ./vcpkg --triplet=$triplet install osg     # Windows: ~30 m, WSL:  ~1.1 h, Ubuntu: ~15 m
-    ./vcpkg --triplet=$triplet install qt5     # Windows: ~60 m, WSL: ~10.2 h, Ubuntu: ~54 m
+    ./vcpkg --triplet=$triplet install fontconfig    # needed by osg for reading fonts
+    ./vcpkg --triplet=$triplet install imgui                            # Windows: ~22 s, WSL:    ~2 m, Ubuntu:  ~9 s
+    ./vcpkg --triplet=$triplet install magnum                           # Windows:  ~3 m, WSL:   ~22 m, Ubuntu:  ~2 m
+    ./vcpkg --triplet=$triplet install osg[tools,plugins,examples]      # Windows: ~30 m, WSL:  ~1.1 h, Ubuntu: ~15 m
+    ./vcpkg --triplet=$triplet install qt5                              # Windows: ~60 m, WSL: ~10.2 h, Ubuntu: ~54 m
     Pop-Location
 }
 
